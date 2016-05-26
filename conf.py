@@ -1,5 +1,9 @@
 #! /usr/bin/python
+#! -*- coding: UTF-8 -*-
 
+"""
+URL NAMES and other important module global variables
+"""
 LOGIN_URL = "log_in"
 LOGOUT_URL = "log_out"
 SIGNUP_URL = "sign_up"

@@ -16,8 +16,11 @@ from .models import UserProfile
 from hashlib import sha1
 from random import random
 from datetime import datetime, timedelta
-# Create your views here.
+
 class SignUp(TemplateView):
+    """
+    Custom Sign up view. Sends a mail for email verification
+    """
     template_name = 'authentication/sign-up.html'
     userform = UserForm(prefix='user')
     userformerrors = None
@@ -82,6 +85,9 @@ class SignUp(TemplateView):
 
 
 class SignUpConfirm(TemplateView):
+    """
+    Account verification view. Validates the token and activates the user for the platform
+    """
     template_name = 'authentication/sign-up-confirm.html'
 
     def get(self, request, *args, **kwargs):

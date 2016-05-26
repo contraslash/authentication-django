@@ -1,9 +1,20 @@
+#! -*- coding: UTF-8 -*-
+
 from django.http import  HttpResponseForbidden
 from django.template.loader import get_template
 from django.core.urlresolvers import reverse_lazy
 
+
 from . import models as authentication_models
 def check_permissions(function):
+    """
+    Decorator for verify access control in default URL, based on custom permission defined in Permission model.
+    Using check_permissions decorator, the system will verify the access to an user to respective view.
+
+    Recomended for use in dispatch method in Django Class Based Views
+    :param function: Function to wrap
+    :return: Function to continue or HttpForbidden action
+    """
     def inner_check(*args, **kwargs):
         request = None
         if kwargs.get('request', False):

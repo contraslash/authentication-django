@@ -8,17 +8,21 @@ from django.utils.translation import ugettext as _
 
 
 class LogInForm(forms.Form):
+    """
+    Default login form, uses username and password for standard authentication in django.contrib.auth
+    """
     username = forms.CharField(max_length=100)
     password = forms.CharField(widget=forms.PasswordInput(render_value=False), max_length=100)
 
 
 class UserForm(ModelForm):
     """
-    ModelForm que extiende del Modelo de usuario por defecto de Django
+    Form wrapper for User in django.contril.auth
     """
     password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
 
     class Meta:
+
         model = User
         fields = ['email', 'username', 'password']
         labels = {
@@ -44,6 +48,10 @@ class UserForm(ModelForm):
         }
 
     def clean_email(self):
+        """
+        Verification for unique email
+        :return: Email or raise exception
+        """
         email = self.cleaned_data["email"]
         try:
             User._default_manager.get(email=email)
@@ -52,6 +60,11 @@ class UserForm(ModelForm):
         raise forms.ValidationError('duplicate email')
 
     def save(self, commit=True):
+        """
+        Custom save method for determine active and unactive users
+        :param commit:
+        :return:
+        """
         user = super(UserForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
         if commit:
