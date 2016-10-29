@@ -1,5 +1,12 @@
+#! -*- encoding: UTF-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
+from django.db import IntegrityError
+
+from base import utils
+
+from . import conf as authentication_conf
 
 class Role(models.Model):
     """
@@ -30,6 +37,25 @@ class UserProfile(models.Model):
     expiration = models.DateTimeField(blank=True, null=True)
     # Role in system for this user
     role = models.ForeignKey(Role)
+
+    # Slug
+    slug = models.SlugField()
+    # profile_image
+    image = models.ImageField(blank=True, null=True, upload_to=authentication_conf.UPLOAD_PROFILE_IMAGES)
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if not self.slug:
+            self.slug = slugify(self.user.username)
+        successful_save = False
+        saved_object = None
+        while not successful_save:
+            try:
+                saved_object = super(UserProfile, self).save(force_insert, force_update, using, update_fields)
+                successful_save = True
+            except IntegrityError:
+                    self.slug = self.slug[:-4] + "-" + utils.generate_random_string(4)
+        return saved_object
 
     def __unicode__(self):
         return unicode(self.user)

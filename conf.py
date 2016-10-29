@@ -16,6 +16,8 @@ RESET_PASSWORD_DONE_URL = "password_reset_done"
 RESET_PASSWORD_CONFIRM_URL = "password_reset_confirm"
 RESET_PASSWORD_COMPLETEURL = "password_reset_complete"
 
+UPLOAD_PROFILE_IMAGES = "profile_images"
+
 # Email Settings
 EMAIL_FROM = "info@contraslash.com"
 EMAIL_SUBJECT = _("Confirmation email")
