@@ -10,6 +10,8 @@ from django.template.loader import get_template
 from django.template.context import Context
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
+from django.utils import timezone
+
 
 
 from .forms import UserForm, User
@@ -49,19 +51,25 @@ class SignUp(TemplateView):
     def create_profile(self, user, role=None):
         username = user.username
         email = user.email
+
         salt = sha1(str(random())).hexdigest()[:5]
+
         activation_key = sha1(salt+email).hexdigest()
-        key_expires = datetime.today() + timedelta(2)
+
+        today = timezone.make_aware(datetime.today(), timezone.get_current_timezone())
+        key_expires = today + timedelta(2)
 
         # Get user by username
         user = User.objects.get(username=username)
 
         # Create and save user profile
         user_profile = UserProfile(user=user, activation_token=activation_key, expiration=key_expires, role=role)
+
         user_profile.save()
+
         return user_profile
 
-    def enviar_correo(self, user_profile):
+    def send_mail(self, user_profile):
         activation_key = user_profile.activation_token
         email = user_profile.user.email
 
@@ -97,7 +105,7 @@ class SignUp(TemplateView):
             user_profile = self.create_profile(user)
 
             if self.send_confirmation_mail:
-                self.enviar_correo(user_profile)
+                self.send_mail(user_profile)
                 messages.add_message(self.request, messages.INFO, message=conf.CONFIRM_ACCOUNT)
                 return HttpResponseRedirect(reverse_lazy('index'))
             else:
@@ -108,7 +116,7 @@ class SignUp(TemplateView):
                 user.is_active = True
                 user.save()
                 login(self.request, user)
-                return reverse_lazy('index')
+                return HttpResponseRedirect(reverse_lazy('index'))
 
         self.userformerrors = userform.errors
         return render(request, self.template_name, self.get_context_data(**kwargs))

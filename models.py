@@ -36,10 +36,10 @@ class UserProfile(models.Model):
     # Expiration date for activation token
     expiration = models.DateTimeField(blank=True, null=True)
     # Role in system for this user
-    role = models.ForeignKey(Role)
+    role = models.ForeignKey(Role, blank=True, null=True)
 
     # Slug
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True)
     # profile_image
     image = models.ImageField(blank=True, null=True, upload_to=authentication_conf.UPLOAD_PROFILE_IMAGES)
 
@@ -54,7 +54,7 @@ class UserProfile(models.Model):
                 saved_object = super(UserProfile, self).save(force_insert, force_update, using, update_fields)
                 successful_save = True
             except IntegrityError:
-                    self.slug = self.slug[:-4] + "-" + utils.generate_random_string(4)
+                self.slug = self.slug[:-4] + "-" + utils.generate_random_string(4)
         return saved_object
 
     def __unicode__(self):
