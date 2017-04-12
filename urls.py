@@ -10,19 +10,17 @@ urlpatterns = [
     # Log in
     url(
         r'log-in/$',
-        auth_views.login,
-        {
-            'template_name': 'authentication/log-in.html',
-        },
+        auth_views.LoginView.as_view(
+            template_name="authentication/log-in.html"
+        ),
         name='log_in'
     ),
 
     url(
         r'log-out/$',
-        auth_views.logout,
-        {
-            'next_page': '/'
-        },
+        auth_views.LogoutView.as_view(
+            next_page="/"
+        ),
         name='log_out'
     ),
 
@@ -41,56 +39,45 @@ urlpatterns = [
     # Change Password
     url(
         r'change-password/$',
-        auth_views.password_change,
-        {
-            'template_name': 'authentication/change-password.html',
-        },
-        name='change_password'
+        auth_views.PasswordChangeView.as_view(
+            template_name="authentication/change-password.html"
+        ),
+        name='password_change'
     ),
     url(
         r'change-password-done/$',
-        auth_views.password_change_done,
-        {
-            'template_name': 'authentication/change-password-success.html',
-        },
+        auth_views.PasswordChangeDoneView.as_view(
+            template_name="authentication/change-password-success.html"
+        ),
         name='password_change_done'
     ),
 
     # Password Recovery
     url(
         r'recover-password/$',
-        auth_views.password_reset,
-        {
-            'template_name': 'authentication/recover-password.html',
-            'email_template_name': 'authentication/email-restore-password.html',
-            'post_reset_redirect': reverse_lazy('password_reset_done')
-        },
+        auth_views.PasswordResetView.as_view(
+            template_name="authentication/recover-password.html",
+            html_email_template_name="authentication/email-restore-password.html",
+        ),
         name='password_reset'
     ),
     url(
         r'recover-password-done/$',
-        auth_views.password_reset_done,
-        {
-            'template_name': 'authentication/recover-password-success.html',
-        },
+        auth_views.PasswordResetDoneView.as_view(
+            template_name="authentication/recover-password-success.html"
+        ),
         name='password_reset_done'
     ),
 
 
     url(
         r'reset-password/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-        auth_views.password_reset_confirm,
-        {
-            'template_name': 'authentication/reset-password.html',
-        },
+        auth_views.PasswordResetConfirmView.as_view(template_name="authentication/reset-password.html"),
         name='password_reset_confirm'
     ),
     url(
         r'reset-password-done/$',
-        auth_views.password_reset_complete,
-        {
-            'template_name': 'authentication/change-password-success.html',
-        },
+        auth_views.PasswordResetDoneView.as_view(template_name="authentication/change-password-success.html"),
         name='password_reset_complete'
     ),
 

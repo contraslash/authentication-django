@@ -27,17 +27,11 @@
             {% endif %}
             <form class="col s12" method="POST" action="{% url 'log_in' %}">
                 {%  csrf_token %}
-                <div class="input-field">
-                    <i class="mdi-action-account-circle prefix"></i>
-                    <input type="text" name="username">
-                    <label for="username">{% trans 'Username' %}</label>
-                </div>
-                <div class="input-field">
-                    <i class="mdi-action-input prefix"></i>
-                    <input type="password" name="password">
-                    <label for="password">{% trans 'Password' %}</label>
-                </div>
-                <br/>
+
+                {% for input in form %}
+                    <label for="{{ input.name }}">{{ input.label }}</label>
+                    {{ input }}
+                {% endfor %}
                 <button type="submit" class="btn waves-effect waves-light">
                     {% trans 'Log in' %}
                     <i class="mdi-content-send right"></i>

@@ -22,6 +22,7 @@ from hashlib import sha1
 from random import random
 from datetime import datetime, timedelta
 
+
 class SignUp(TemplateView):
     """
     Custom Sign up view. Sends a mail for email verification
@@ -33,7 +34,6 @@ class SignUp(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(SignUp, self).get_context_data(**kwargs)
-        print context
         if 'userform' not in context:
             context['userform'] = self.userform
         if 'userformerrors' not in context:
