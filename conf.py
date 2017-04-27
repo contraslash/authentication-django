@@ -30,5 +30,7 @@ DOMAIN = "http://c4tk.contraslash.com"
 CONFIRM_ACCOUNT = _("Please confirm your account")
 ACCOUNT_CONFIRMATION_SUCCESSFUL = _('Your account has been activated')
 
+LACK_OF_PERMISSION = _('You have not the proper permissions to enter this site')
+
 INVALID_URL = _('Invalid URL')
 EXPIRED_URL = _('Expired URL')
