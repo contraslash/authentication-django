@@ -6,6 +6,8 @@ from django.core.urlresolvers import reverse_lazy
 
 
 from . import models as authentication_models
+
+
 def check_permissions(function):
     """
     Decorator for verify access control in default URL, based on custom permission defined in Permission model.
@@ -29,10 +31,6 @@ def check_permissions(function):
             request_name = request.resolver_match.url_name
             permissions = authentication_models.Permission.objects.filter(role=role, reverse_lazy_url=request_name)
 
-            print profile
-            print role
-            print request_name
-            print permissions
             if not permissions:
                 return HttpResponseForbidden(get_template('403.html').render({}))
 

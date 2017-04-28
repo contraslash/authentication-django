@@ -8,6 +8,7 @@ from base import utils
 
 from . import conf as authentication_conf
 
+
 class Role(models.Model):
     """
     Model for role system
@@ -57,8 +58,8 @@ class UserProfile(models.Model):
                 self.slug = self.slug[:-4] + "-" + utils.generate_random_string(4)
         return saved_object
 
-    def __unicode__(self):
-        return unicode(self.user)
+    def __str__(self):
+        return str(self.user)
 
 
 class Permission(models.Model):
@@ -76,6 +77,6 @@ class Permission(models.Model):
     # Reverse name of url
     reverse_lazy_url = models.CharField(max_length=150)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
