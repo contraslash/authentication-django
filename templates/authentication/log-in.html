@@ -39,7 +39,7 @@
                 {% if next %}
                         <input type="hidden" name="next" value="{{ next }}" />
                 {% else %}
-                        <input type="hidden" name="next" value="{% url 'index' %}" />
+                        <input type="hidden" name="next" value="/" />
                 {% endif %}
                 <br/>
                 <a class="left"  href="{% url 'password_reset' %}">

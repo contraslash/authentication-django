@@ -1,6 +1,9 @@
 #! -*- encoding: UTF-8 -*-
-from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin, PermissionRequiredMixin
 from django.contrib import messages
+
+from django.template.loader import get_template
+from django import http
 
 from . import conf
 
@@ -10,6 +13,12 @@ class CustomLoginRequiredMixin(LoginRequiredMixin):
     Generic Mixin to make an user to be authenticated before see system information
     """
     login_url = "log_in"
+
+
+class CustomPermissionRequiredMixin(PermissionRequiredMixin):
+
+    def handle_no_permission(self):
+        return http.HttpResponseForbidden(get_template("403.html").render())
 
 
 class SuperAdminRequiredMixin(AccessMixin):
