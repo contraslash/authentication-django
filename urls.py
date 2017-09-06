@@ -4,7 +4,10 @@ from django.core.urlresolvers import reverse_lazy
 
 from django.contrib.auth import views as auth_views
 
-from . import views
+from . import (
+    views,
+    conf
+)
 
 urlpatterns = [
     # Log in
@@ -13,7 +16,7 @@ urlpatterns = [
         auth_views.LoginView.as_view(
             template_name="authentication/log-in.html"
         ),
-        name='log_in'
+        name=conf.LOGIN_URL
     ),
 
     url(
@@ -21,19 +24,19 @@ urlpatterns = [
         auth_views.LogoutView.as_view(
             next_page="/"
         ),
-        name='log_out'
+        name=conf.LOGOUT_URL
     ),
 
     # Sign Up
     url(
         r'sign-up/$',
         views.SignUp.as_view(),
-        name='sign_up'
+        name=conf.SIGNUP_URL
     ),
     url(
         r'sign-up-confirm/(?P<token>\w+)/$',
         views.SignUpConfirm.as_view(),
-        name='sign_up_confirm'
+        name=conf.SIGNUP_CONFIRM_URL
     ),
 
     # Change Password
@@ -42,14 +45,14 @@ urlpatterns = [
         auth_views.PasswordChangeView.as_view(
             template_name="authentication/change-password.html"
         ),
-        name='password_change'
+        name=conf.CHANGE_PASSWORD_URL
     ),
     url(
         r'change-password-done/$',
         auth_views.PasswordChangeDoneView.as_view(
             template_name="authentication/change-password-success.html"
         ),
-        name='password_change_done'
+        name=conf.CHANGE_PASSWORD_DONE_URL
     ),
 
     # Password Recovery
@@ -59,26 +62,26 @@ urlpatterns = [
             template_name="authentication/recover-password.html",
             html_email_template_name="authentication/email-restore-password.html",
         ),
-        name='password_reset'
+        name=conf.RESET_PASSWORD_URL
     ),
     url(
         r'recover-password-done/$',
         auth_views.PasswordResetDoneView.as_view(
             template_name="authentication/recover-password-success.html"
         ),
-        name='password_reset_done'
+        name=conf.RESET_PASSWORD_DONE_URL
     ),
 
 
     url(
         r'reset-password/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
         auth_views.PasswordResetConfirmView.as_view(template_name="authentication/reset-password.html"),
-        name='password_reset_confirm'
+        name=conf.RESET_PASSWORD_CONFIRM_URL
     ),
     url(
         r'reset-password-done/$',
         auth_views.PasswordResetDoneView.as_view(template_name="authentication/change-password-success.html"),
-        name='password_reset_complete'
+        name=conf.RESET_PASSWORD_COMPLETE_URL
     ),
 
 

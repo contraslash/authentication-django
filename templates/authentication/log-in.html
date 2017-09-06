@@ -22,8 +22,11 @@
         <div class="row">
 
             {% if form.errors %}
-
-                <p>{% trans 'Invalid username or password' %}</p>
+                <ul>
+                    {% for error in form.errors %}
+                        {{ form.non_field_errors }}
+                    {% endfor %}
+                </ul>
             {% endif %}
             <form class="col s12" method="POST" action="{% url 'log_in' %}">
                 {%  csrf_token %}
