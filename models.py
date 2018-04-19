@@ -6,24 +6,6 @@ from django.db import IntegrityError
 
 from base import utils
 
-from . import conf as authentication_conf
-
-
-class Role(models.Model):
-    """
-    Model for role system
-    """
-
-    # Name of the role
-    name = models.CharField(max_length=100)
-    # Short name, used for better results in queries
-    short_name = models.CharField(max_length=100, blank=True, null=True)
-    # Description of actions for this role
-    description = models.TextField()
-
-    def __unicode__(self):
-        return self.name
-
 
 class UserProfile(models.Model):
     """
@@ -36,13 +18,9 @@ class UserProfile(models.Model):
     activation_token = models.CharField(max_length=40, blank=True)
     # Expiration date for activation token
     expiration = models.DateTimeField(blank=True, null=True)
-    # Role in system for this user
-    role = models.ForeignKey(Role, blank=True, null=True)
 
     # Slug
     slug = models.SlugField(blank=True)
-    # profile_image
-    image = models.ImageField(blank=True, null=True, upload_to=authentication_conf.UPLOAD_PROFILE_IMAGES)
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
@@ -60,23 +38,3 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return str(self.user)
-
-
-class Permission(models.Model):
-    """
-    Model for permission custom implementation
-    """
-    # Many to many relation to Rol
-    role = models.ManyToManyField(Role)
-    # Short name, used for better results in queries
-    short_name = models.CharField(max_length=100)
-    # Name of the permission
-    name = models.CharField(max_length=100)
-    # Description of permission
-    description = models.TextField()
-    # Reverse name of url
-    reverse_lazy_url = models.CharField(max_length=150)
-
-    def __str__(self):
-        return self.name
-

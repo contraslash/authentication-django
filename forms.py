@@ -1,31 +1,30 @@
-#! /etc/bin/python
 # -*- coding: utf-8 -*-
 from django import forms
-from django.contrib.auth.models import User
-from django.forms import ModelForm
-from django import forms
+from django.contrib.auth import models as auth_models
 from django.utils.translation import ugettext as _
 
-
-class LogInForm(forms.Form):
-    """
-    Default login form, uses username and password for standard authentication in django.contrib.auth
-    """
-    username = forms.CharField(max_length=100)
-    password = forms.CharField(widget=forms.PasswordInput(render_value=False), max_length=100)
+from . import conf
 
 
-class UserForm(ModelForm):
+class UserBaseForm(forms.ModelForm):
     """
     Form wrapper for User in django.contril.auth
     """
-    password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
+    password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
 
-        model = User
-        fields = ['email', 'username', 'password']
+        model = auth_models.User
+        fields = [
+            'first_name',
+            'last_name',
+            'username',
+            'email',
+            'password'
+        ]
         labels = {
+            'first_name': _('First Name'),
+            'last_name': _('Last Name'),
             'email': _('Email'),
             'username': _('Username'),
             'password': _('Password'),
@@ -53,11 +52,14 @@ class UserForm(ModelForm):
         :return: Email or raise exception
         """
         email = self.cleaned_data["email"]
-        try:
-            User._default_manager.get(email=email)
-        except User.DoesNotExist:
+        if conf.UNIQUE_EMAIL:
+            try:
+                auth_models.User.objects.get(email=email)
+            except UserBaseForm.DoesNotExist:
+                return email
+            raise forms.ValidationError('duplicate email')
+        else:
             return email
-        raise forms.ValidationError('duplicate email')
 
     def save(self, commit=True):
         """
@@ -65,9 +67,45 @@ class UserForm(ModelForm):
         :param commit:
         :return:
         """
-        user = super(UserForm, self).save(commit=False)
+        user = super(UserBaseForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
         if commit:
-            user.is_active = False
+            if conf.VERIFY_EMAIL:
+                user.is_active = False
             user.save()
         return user
+
+
+class EmailPasswordForm(UserBaseForm):
+    """
+    Use just Email to login
+    """
+
+    class Meta(UserBaseForm.Meta):
+        fields = (
+            'email',
+            'password'
+        )
+
+    def save(self, commit=True):
+        """
+        Custom save method for determine active and unactive users
+        :param commit:
+        :return:
+        """
+        user = super(UserBaseForm, self).save(commit=False)
+        user.username = self.cleaned_data['email']
+        if commit:
+            if conf.VERIFY_EMAIL:
+                user.is_active = False
+            user.save()
+        return user
+
+
+class UsernameEmailPasswordForm(UserBaseForm):
+    class Meta(UserBaseForm.Meta):
+        fields = (
+            'username',
+            'email',
+            'password'
+        )

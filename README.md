@@ -1,6 +1,7 @@
 # Authentication
 
-Authentication is a simple django module that provides a simple wrapper for django.contrib.auth.views, adding a custom look and feel and a modified sign up method with email confirmation
+Authentication is a simple django module that provides a simple wrapper for django.contrib.auth.views, 
+adding a custom look and feel and a modified sign up method with email confirmation
 
 To get this work, make sure you got the email configuration in you settings.py
 
