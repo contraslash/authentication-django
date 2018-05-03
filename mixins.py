@@ -20,14 +20,14 @@ class CustomLoginRequiredMixin(LoginRequiredMixin):
 class CustomPermissionRequiredMixin(PermissionRequiredMixin):
 
     def handle_no_permission(self):
-        return http.HttpResponseForbidden(get_template(conf.PAGE_403).render())
+        return http.HttpResponseForbidden(get_template(conf.AUTH_PAGE_403).render())
 
 
 class AlreadyAuthenticatedMixin(object):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             return http.HttpResponseRedirect(
-                reverse_lazy(conf.INDEX_URL_NAME)
+                reverse_lazy(conf.AUTH_INDEX_URL_NAME)
             )
         else:
             return super(AlreadyAuthenticatedMixin, self).dispatch(request, *args, **kwargs)
