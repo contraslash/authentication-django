@@ -2,8 +2,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin, PermissionRequiredMixin
 from django.contrib import messages
 from django import http
-from django.core.urlresolvers import reverse_lazy
-
+try:
+    from django.core.urlresolvers import reverse_lazy
+except ImportError:
+    from django.urls import reverse_lazy
 from django.template.loader import get_template
 from django import http
 

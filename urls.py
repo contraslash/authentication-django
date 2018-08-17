@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
-from django.core.urlresolvers import reverse_lazy
+try:
+    from django.core.urlresolvers import reverse_lazy
+except ImportError:
+    from django.urls import reverse_lazy
 
 from django.contrib.auth import views as auth_views
 
@@ -9,6 +12,7 @@ from . import (
     conf
 )
 
+app_name = 'authentication'
 urlpatterns = [
     # Log in
     url(

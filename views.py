@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 
 from django.views import generic
 from django.shortcuts import HttpResponseRedirect
-from django.core.urlresolvers import reverse_lazy, reverse
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.contrib import messages
@@ -16,6 +15,10 @@ from django.contrib.auth import (
     models as auth_models,
     views as auth_views
 )
+try:
+    from django.core.urlresolvers import reverse_lazy, reverse
+except ImportError:
+    from django.urls import reverse_lazy, reverse
 
 
 from . import (

@@ -13,7 +13,7 @@ class UserProfile(models.Model):
     """
 
     # One to one references to User Model
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     # Activation toke for email verification
     activation_token = models.CharField(max_length=40, blank=True)
     # Expiration date for activation token
