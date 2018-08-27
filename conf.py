@@ -6,7 +6,16 @@ from .forms import UserBaseForm
 
 settings = LazySettings()
 
+
+def get_from_settings_or_default(var_name, default):
+    try:
+        return settings.__getattr__(var_name)
+    except AttributeError:
+        return default
+
 # URL NAMES and other important module global variables
+
+AUTH_NAMESPACE = get_from_settings_or_default('AUTH_NAMESPACE', "authentication")
 
 LOGIN_URL = "log_in"
 LOGOUT_URL = "log_out"
@@ -24,13 +33,6 @@ EXPIRED_URL = _('Expired URL')
 PERMISSION_DENIED = _('You have not the proper permissions to enter this site')
 
 # This configurations should be modified are loaded from settings
-
-
-def get_from_settings_or_default(var_name, default):
-    try:
-        return settings.__getattr__(var_name)
-    except AttributeError:
-        return default
 
 AUTH_UNIQUE_EMAIL = get_from_settings_or_default('AUTH_UNIQUE_EMAIL', False)
 AUTH_VERIFY_EMAIL = get_from_settings_or_default('AUTH_VERIFY_EMAIL', False)

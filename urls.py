@@ -12,7 +12,6 @@ from . import (
     conf
 )
 
-app_name = 'authentication'
 urlpatterns = [
     # Log in
     url(

@@ -35,6 +35,10 @@ class Login(auth_views.LoginView):
         context = super(Login, self).get_context_data(**kwargs)
         context['password_reset_allowed'] = conf.AUTH_ALLOW_PASSWORD_RECOVERY
         context['registration_allowed'] = conf.AUTH_ALLOW_SIGNUP
+        context['login_reversed_url'] = reverse_lazy(conf.LOGIN_URL)
+        context['password_reset_reversed_url'] = reverse_lazy(conf.RESET_PASSWORD_URL)
+        context['signup_reversed_url'] = reverse_lazy(conf.SIGNUP_URL)
+        context['logout_reversed_url'] = reverse_lazy(conf.LOGOUT_URL)
         return context
 
 
@@ -52,6 +56,8 @@ class SignUp(
 
     def get_context_data(self, **kwargs):
         context = super(SignUp, self).get_context_data(**kwargs)
+
+        context['logout_reversed_url'] = reverse_lazy(conf.LOGOUT_URL)
 
         return context
 

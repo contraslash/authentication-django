@@ -16,7 +16,7 @@
                 {% blocktrans %}
                     You are logged as {{ user }}
                 {% endblocktrans %}
-                <a href="{% url 'log_out' %}">{% trans 'Log out' %}</a>
+                <a href="{{ logout_reversed_url }}">{% trans 'Log out' %}</a>
             {% endif %}
         {%  else %}
             <div class="row">
@@ -28,7 +28,7 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
-                <form class="col s12" method="POST" action="{% url 'log_in' %}">
+                <form class="col s12" method="POST" action="{{ login_reversed_url }}">
                     {%  csrf_token %}
 
                     {% for input in form %}
@@ -46,12 +46,12 @@
                     {% endif %}
                     <br/>
                     {% if password_reset_allowed %}
-                        <a class="left"  href="{% url 'password_reset' %}">
+                        <a class="left"  href="{{ password_reset_reversed_url }}">
                            {% trans 'Forgot password?' %}
                         </a>
                     {% endif %}
                     {% if registration_allowed %}
-                        <a class="right" href="{% url 'sign_up' %}">
+                        <a class="right" href="{{ signup_reversed_url }}">
                             {% trans 'Sign up' %}
                         </a>
                     {% endif %}
