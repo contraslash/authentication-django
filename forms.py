@@ -52,7 +52,7 @@ class UserBaseForm(forms.ModelForm):
         :return: Email or raise exception
         """
         email = self.cleaned_data["email"]
-        if conf.UNIQUE_EMAIL:
+        if conf.AUTH_UNIQUE_EMAIL:
             try:
                 auth_models.User.objects.get(email=email)
             except UserBaseForm.DoesNotExist:
@@ -70,7 +70,7 @@ class UserBaseForm(forms.ModelForm):
         user = super(UserBaseForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
         if commit:
-            if conf.VERIFY_EMAIL:
+            if conf.AUTH_VERIFY_EMAIL:
                 user.is_active = False
             user.save()
         return user
@@ -96,7 +96,7 @@ class EmailPasswordForm(UserBaseForm):
         user = super(UserBaseForm, self).save(commit=False)
         user.username = self.cleaned_data['email']
         if commit:
-            if conf.VERIFY_EMAIL:
+            if conf.AUTH_VERIFY_EMAIL:
                 user.is_active = False
             user.save()
         return user
