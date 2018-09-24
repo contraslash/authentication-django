@@ -64,10 +64,12 @@ class SignUp(
     @staticmethod
     def save_user(userform):
         if userform.is_valid():
+            print("User form is valid!")
             user = userform.save(commit=False)
             user.set_password(userform.cleaned_data['password'])
             user.save()
             return user
+        print("User form is NOT VALID")
         return None
 
     @staticmethod
@@ -75,9 +77,9 @@ class SignUp(
         username = user.username
         email = user.email
 
-        salt = sha1(str(random())).hexdigest()[:5]
+        salt = sha1(str(random()).encode("UTF-8")).hexdigest()[:5]
 
-        activation_key = sha1(salt+email).hexdigest()
+        activation_key = sha1((salt+email).encode("UTF-8")).hexdigest()
 
         today = timezone.make_aware(datetime.today(), timezone.get_current_timezone())
         key_expires = today + timedelta(2)
@@ -129,8 +131,7 @@ class SignUp(
             html_message=template.render(context))
 
     def form_valid(self, form):
-        userform = form.save(commit=False)
-        user = self.save_user(userform)
+        user = self.save_user(form)
         user_profile = self.create_profile(user)
 
         if self.send_confirmation_mail:

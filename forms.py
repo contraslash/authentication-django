@@ -52,6 +52,7 @@ class UserBaseForm(forms.ModelForm):
         :return: Email or raise exception
         """
         email = self.cleaned_data["email"]
+        print("Cleaning email {}".format(email))
         if conf.AUTH_UNIQUE_EMAIL:
             try:
                 auth_models.User.objects.get(email=email)

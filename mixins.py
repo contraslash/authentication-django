@@ -27,13 +27,12 @@ class CustomPermissionRequiredMixin(PermissionRequiredMixin):
 
 class AlreadyAuthenticatedMixin(object):
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return http.HttpResponseRedirect(
                 reverse_lazy(conf.AUTH_INDEX_URL_NAME)
             )
         else:
             return super(AlreadyAuthenticatedMixin, self).dispatch(request, *args, **kwargs)
-
 
 
 class SuperAdminRequiredMixin(AccessMixin):

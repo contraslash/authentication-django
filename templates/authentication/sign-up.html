@@ -26,6 +26,7 @@
                     <form method="POST">
                     {%  csrf_token %}
                         {% for item in form %}
+                            {{ item.errors }}
                             <div class="input-field">
                                 {{ item }}
                                 <label for="{{ item.name }}">{{ item.label }}</label>
