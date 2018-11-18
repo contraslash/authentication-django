@@ -1,7 +1,23 @@
 # Authentication
 
 Authentication is a simple django module that provides a simple wrapper for django.contrib.auth.views, 
-adding a custom look and feel and a modified sign up method with email confirmation
+adding a custom look and feel and a modified sign up method with email confirmation.
+
+Configuration available in `settings.py`
+
+```python
+AUTH_UNIQUE_EMAIL = False  # All emails must be uniques
+AUTH_VERIFY_EMAIL = False  # Send a message to confirm email exists, SMTP configuration must be enabled
+
+AUTH_ALLOW_SIGNUP = True  # Users can register by themselves
+AUTH_ALLOW_PASSWORD_RECOVERY = True  # Provide methods to recover password, SMPT configuration must be enabled
+
+AUTH_EMAIL_FROM = ""  # Email name show on message
+AUTH_EMAIL_SUBJECT = "..."  # Email title for email confirmation
+AUTH_EMAIL_BODY = "..."  # Email body for email confirmation
+
+AUTH_INDEX_URL_NAME = "index"  # Default page to redirect after login
+```
 
 To get this work, make sure you got the email configuration in you settings.py
 

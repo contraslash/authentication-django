@@ -56,9 +56,9 @@ class UserBaseForm(forms.ModelForm):
         if conf.AUTH_UNIQUE_EMAIL:
             try:
                 auth_models.User.objects.get(email=email)
-            except UserBaseForm.DoesNotExist:
+            except auth_models.User.DoesNotExist:
                 return email
-            raise forms.ValidationError('duplicate email')
+            raise forms.ValidationError(conf.AUTH_DUPLICATED_EMAIL_ERROR_MESSAGE)
         else:
             return email
 

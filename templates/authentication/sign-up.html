@@ -19,10 +19,6 @@
                         <a href="{{ logout_reversed_url }}">{% trans 'Log out' %}</a>
                     {% endif %}
                 {%  else %}
-
-                    {% if userformerrors %}
-                        {{ userformerrors }}
-                    {% endif %}
                     <form method="POST">
                     {%  csrf_token %}
                         {% for item in form %}

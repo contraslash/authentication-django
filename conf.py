@@ -1,11 +1,10 @@
 #! -*- coding: UTF-8 -*-
+import importlib
 
 from django.utils.translation import ugettext_lazy as _
 from django.conf import LazySettings
-from .forms import UserBaseForm
 
 settings = LazySettings()
-
 
 def get_from_settings_or_default(var_name, default):
     try:
@@ -41,7 +40,7 @@ AUTH_ALLOW_SIGNUP = get_from_settings_or_default('AUTH_ALLOW_SIGNUP', True)
 AUTH_ALLOW_PASSWORD_RECOVERY = get_from_settings_or_default('AUTH_ALLOW_PASSWORD_RECOVERY', True)
 
 # Email Settings
-AUTH_EMAIL_FROM = get_from_settings_or_default('AUTH_EMAIL_FROM', "hello@contraslash.com")
+AUTH_EMAIL_FROM = get_from_settings_or_default('AUTH_EMAIL_FROM', "")
 AUTH_EMAIL_SUBJECT = get_from_settings_or_default('AUTH_EMAIL_SUBJECT', _("Confirmation email"))
 AUTH_EMAIL_BODY = get_from_settings_or_default(
     'AUTH_EMAIL_BODY',
@@ -50,6 +49,25 @@ AUTH_EMAIL_BODY = get_from_settings_or_default(
 
 # Domain Settings
 AUTH_DOMAIN = get_from_settings_or_default('AUTH_DOMAIN', "https://contraslash.com")
+
+AUTH_PAGE_403 = get_from_settings_or_default('AUTH_PAGE_403', "403.html")
+
+AUTH_USER_SIGNUP_FORM_MODULE = "applications.authentication.forms"
+
+AUTH_USER_SIGNUP_FORM = getattr(
+    importlib.import_module(
+        AUTH_USER_SIGNUP_FORM_MODULE
+    ),
+    get_from_settings_or_default(
+        'AUTH_USER_SIGNUP_FORM',
+        "UserBaseForm"
+    )
+)
+
+
+AUTH_INDEX_URL_NAME = get_from_settings_or_default('AUTH_INDEX_URL_NAME', "index")
+AUTH_TEMPLATE_FOLDER = get_from_settings_or_default('AUTH_TEMPLATE_FOLDER', "authentication")
+AUTH_REDIRECT_FIELD_NAME = get_from_settings_or_default('AUTH_TEMPLATE_FOLDER', "next")
 
 # Messages Settings
 AUTH_CONFIRM_ACCOUNT = get_from_settings_or_default(
@@ -60,12 +78,13 @@ AUTH_ACCOUNT_CONFIRMATION_SUCCESSFUL = get_from_settings_or_default(
     'AUTH_ACCOUNT_CONFIRMATION_SUCCESSFUL',
     _("Your account has been activated")
 )
+AUTH_USER_CANT_BE_CREATED = get_from_settings_or_default(
+    'AUTH_USER_CANT_BE_CREATED',
+    _("User can't be created")
+)
 
-
-AUTH_PAGE_403 = get_from_settings_or_default('AUTH_PAGE_403', "403.html")
-
-AUTH_USER_SIGNUP_FORM = get_from_settings_or_default('AUTH_USER_SIGNUP_FORM', UserBaseForm)
-
-AUTH_INDEX_URL_NAME = get_from_settings_or_default('AUTH_INDEX_URL_NAME', "index")
-AUTH_TEMPLATE_FOLDER = get_from_settings_or_default('AUTH_TEMPLATE_FOLDER', "authentication")
+AUTH_DUPLICATED_EMAIL_ERROR_MESSAGE = get_from_settings_or_default(
+    'AUTH_DUPLICATED_EMAIL_ERROR_MESSAGE',
+    _("Duplicated email")
+)
 

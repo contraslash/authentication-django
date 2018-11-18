@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from hashlib import sha1
 from random import random
 from datetime import datetime, timedelta
@@ -9,7 +7,7 @@ from django.shortcuts import HttpResponseRedirect
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login
 from django.utils import timezone
 from django.contrib.auth import (
     models as auth_models,
@@ -64,12 +62,10 @@ class SignUp(
     @staticmethod
     def save_user(userform):
         if userform.is_valid():
-            print("User form is valid!")
             user = userform.save(commit=False)
             user.set_password(userform.cleaned_data['password'])
             user.save()
             return user
-        print("User form is NOT VALID")
         return None
 
     @staticmethod
@@ -132,23 +128,47 @@ class SignUp(
 
     def form_valid(self, form):
         user = self.save_user(form)
+        if user is None:
+            return self.form_invalid(form)
         user_profile = self.create_profile(user)
 
         if self.send_confirmation_mail:
             self.send_mail(user_profile)
-            messages.add_message(self.request, messages.INFO, message=conf.AUTH_CONFIRM_ACCOUNT)
+            messages.add_message(
+                self.request,
+                messages.INFO,
+                message=conf.AUTH_CONFIRM_ACCOUNT
+            )
             return HttpResponseRedirect(reverse_lazy(conf.AUTH_INDEX_URL_NAME))
         else:
-            print(user.username)
-            print(user.password)
-            user = authenticate(
-                username=user.username,
-                password=user.password
-            )
             user.is_active = True
             user.save()
             login(self.request, user)
-            return HttpResponseRedirect(reverse_lazy(conf.AUTH_INDEX_URL_NAME))
+            return HttpResponseRedirect(self.get_next_page())
+
+    def form_invalid(self, form):
+        print("User is NONE")
+        messages.add_message(
+            self.request,
+            messages.ERROR,
+            message=conf.AUTH_USER_CANT_BE_CREATED
+        )
+        return self.render_to_response(
+            {
+                "form": form
+            }
+        )
+
+
+    def get_next_page(self):
+        if (conf.AUTH_REDIRECT_FIELD_NAME in self.request.POST or
+                    conf.AUTH_REDIRECT_FIELD_NAME in self.request.GET):
+            next_page = self.request.POST.get(
+                conf.AUTH_REDIRECT_FIELD_NAME,
+                self.request.GET.get(conf.AUTH_REDIRECT_FIELD_NAME)
+            )
+            return next_page
+        return reverse_lazy(conf.AUTH_INDEX_URL_NAME)
 
 
 class SignUpConfirm(

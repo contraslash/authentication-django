@@ -51,7 +51,7 @@
                         </a>
                     {% endif %}
                     {% if registration_allowed %}
-                        <a class="right" href="{{ signup_reversed_url }}">
+                        <a class="right" href="{{ signup_reversed_url }}{% if next %}?next={{ next }}{% endif %}">
                             {% trans 'Sign up' %}
                         </a>
                     {% endif %}
