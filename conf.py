@@ -6,6 +6,7 @@ from django.conf import LazySettings
 
 settings = LazySettings()
 
+
 def get_from_settings_or_default(var_name, default):
     try:
         return settings.__getattr__(var_name)
@@ -13,6 +14,7 @@ def get_from_settings_or_default(var_name, default):
         return default
 
 # URL NAMES and other important module global variables
+
 
 AUTH_NAMESPACE = get_from_settings_or_default('AUTH_NAMESPACE', "authentication")
 

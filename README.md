@@ -48,5 +48,5 @@ To enable django authentication behavior use this line on yout `settings.py`
 
 ```python
 if 'applications.authentication' in INSTALLED_APPS:
-    from applications.authentication.conf import LOGIN_URL
+    LOGIN_URL = "log_in"
 ```
