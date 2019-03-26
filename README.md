@@ -42,3 +42,11 @@ If you change the Strings Settings, remember to recompile the locales
 And edit the locale folder, for more information visit [our blog](http://blog.contraslash.com/creando-locales-con-django/).
 
 Enjoy and feel free to put a ticket or write me to ma0@contraslash.com
+
+
+To enable django authentication behavior use this line on yout `settings.py`
+
+```python
+if 'applications.authentication' in INSTALLED_APPS:
+    from applications.authentication.conf import LOGIN_URL
+```
