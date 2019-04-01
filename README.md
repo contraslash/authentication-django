@@ -3,7 +3,18 @@
 Authentication is a simple django module that provides a simple wrapper for django.contrib.auth.views, 
 adding a custom look and feel and a modified sign up method with email confirmation.
 
-Configuration available in `settings.py`
+## Basic configuration
+Add `applications.authentication` to your `INSTALLED_APPS` variable in
+`settings.py`
+
+To enable django authentication behavior with [django.contrib.auth.mixins.LoginRequired](https://docs.djangoproject.com/en/2.1/topics/auth/default/#the-loginrequired-mixin) use this line on yout `settings.py`
+
+```python
+if 'applications.authentication' in INSTALLED_APPS:
+    LOGIN_URL = "log_in"
+```
+
+### Other common options
 
 ```python
 AUTH_UNIQUE_EMAIL = False  # All emails must be uniques
@@ -19,6 +30,8 @@ AUTH_EMAIL_BODY = "..."  # Email body for email confirmation
 AUTH_INDEX_URL_NAME = "index"  # Default page to redirect after login
 ```
 
+
+## Email configuration
 To get this work, make sure you got the email configuration in you settings.py
 
 An example for use Gmail SMTPs server:
@@ -33,6 +46,7 @@ DEFAULT_FROM_EMAIL = 'nmyname@gmail.com'
 
 Also please edit the conf.py file, to customize your domain and other options
 
+## Multilingual mode
 If you change the Strings Settings, remember to recompile the locales
 
 ```
@@ -41,12 +55,15 @@ If you change the Strings Settings, remember to recompile the locales
 
 And edit the locale folder, for more information visit [our blog](http://blog.contraslash.com/creando-locales-con-django/).
 
-Enjoy and feel free to put a ticket or write me to ma0@contraslash.com
+## Context processors
+
+To enable LOGIN URLS in all templates add `applications.authentication.context_processors.authentication_urls`
+to your context_processor,
 
 
-To enable django authentication behavior use this line on yout `settings.py`
+## Contributing
 
-```python
-if 'applications.authentication' in INSTALLED_APPS:
-    LOGIN_URL = "log_in"
-```
+This software is licensed under [MIT LICENCE](LICENSE), feel free to create
+a Pull Request.
+
+Enjoy and feel free to put an issue or write me to ma0@contraslash.com

@@ -23,11 +23,13 @@ from . import (
     models,
     conf,
     mixins,
+    forms
 )
 
 
 class Login(auth_views.LoginView):
     template_name = "{}/log-in.html".format(conf.AUTH_TEMPLATE_FOLDER)
+    form_class = forms.CustomLogIn
 
     def get_context_data(self, **kwargs):
         context = super(Login, self).get_context_data(**kwargs)

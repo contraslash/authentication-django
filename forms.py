@@ -1,9 +1,29 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.contrib.auth import models as auth_models
+from django.contrib.auth import (
+    models as auth_models,
+    forms as auth_forms
+)
 from django.utils.translation import ugettext as _
 
 from . import conf
+
+
+class CustomLogIn(auth_forms.AuthenticationForm):
+    username = auth_forms.UsernameField(
+        widget=forms.TextInput(attrs={
+            "autofocus": True,
+            "class": "form-control"
+        }))
+    password = forms.CharField(
+        label=_("Password"),
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control"
+            }
+        ),
+    )
 
 
 class UserBaseForm(forms.ModelForm):
@@ -16,34 +36,34 @@ class UserBaseForm(forms.ModelForm):
 
         model = auth_models.User
         fields = [
-            'first_name',
-            'last_name',
-            'username',
-            'email',
-            'password'
+            "first_name",
+            "last_name",
+            "username",
+            "email",
+            "password"
         ]
         labels = {
-            'first_name': _('First Name'),
-            'last_name': _('Last Name'),
-            'email': _('Email'),
-            'username': _('Username'),
-            'password': _('Password'),
+            "first_name": _("First Name"),
+            "last_name": _("Last Name"),
+            "email": _("Email"),
+            "username": _("Username"),
+            "password": _("Password"),
         }
         error_messages = {
-            'username': {
-                'required': _('Username field is required'),
-                'invalid': _('Username field is invalid')
+            "username": {
+                "required": _("Username field is required"),
+                "invalid": _("Username field is invalid")
             },
-            'password': {
-                'required': _('Password field is required'),
-                'invalid': _('Password field is invalid')
+            "password": {
+                "required": _("Password field is required"),
+                "invalid": _("Password field is invalid")
             }, }
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'validate', 'required': 'required'}),
-            'last_name': forms.TextInput(attrs={'class': 'validate', 'required': 'required'}),
-            'email': forms.EmailInput(attrs={'class': 'validate', 'required': 'required'}),
-            'username': forms.TextInput(attrs={'class': 'validate', 'required': 'required'}),
-            'password': forms.TextInput(attrs={'class': 'validate', 'required': 'required'}),
+            "first_name": forms.TextInput(attrs={"class": "validate", "required": "required"}),
+            "last_name": forms.TextInput(attrs={"class": "validate", "required": "required"}),
+            "email": forms.EmailInput(attrs={"class": "validate", "required": "required"}),
+            "username": forms.TextInput(attrs={"class": "validate", "required": "required"}),
+            "password": forms.TextInput(attrs={"class": "validate", "required": "required"}),
         }
 
     def clean_email(self):
@@ -69,7 +89,7 @@ class UserBaseForm(forms.ModelForm):
         :return:
         """
         user = super(UserBaseForm, self).save(commit=False)
-        user.email = self.cleaned_data['email']
+        user.email = self.cleaned_data["email"]
         if commit:
             if conf.AUTH_VERIFY_EMAIL:
                 user.is_active = False
@@ -84,8 +104,8 @@ class EmailPasswordForm(UserBaseForm):
 
     class Meta(UserBaseForm.Meta):
         fields = (
-            'email',
-            'password'
+            "email",
+            "password"
         )
 
     def save(self, commit=True):
@@ -95,7 +115,7 @@ class EmailPasswordForm(UserBaseForm):
         :return:
         """
         user = super(UserBaseForm, self).save(commit=False)
-        user.username = self.cleaned_data['email']
+        user.username = self.cleaned_data["email"]
         if commit:
             if conf.AUTH_VERIFY_EMAIL:
                 user.is_active = False
@@ -106,7 +126,7 @@ class EmailPasswordForm(UserBaseForm):
 class UsernameEmailPasswordForm(UserBaseForm):
     class Meta(UserBaseForm.Meta):
         fields = (
-            'username',
-            'email',
-            'password'
+            "username",
+            "email",
+            "password"
         )
