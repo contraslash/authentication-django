@@ -8,6 +8,7 @@ from django.utils.translation import ugettext as _
 
 from . import conf
 
+from base.utils import generate_bootstrap_widgets_for_all_fields
 
 class CustomLogIn(auth_forms.AuthenticationForm):
     username = auth_forms.UsernameField(
@@ -30,7 +31,7 @@ class UserBaseForm(forms.ModelForm):
     """
     Form wrapper for User in django.contril.auth
     """
-    password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control" }))
 
     class Meta:
 
@@ -130,3 +131,4 @@ class UsernameEmailPasswordForm(UserBaseForm):
             "email",
             "password"
         )
+        widgets = generate_bootstrap_widgets_for_all_fields(auth_models.User)
