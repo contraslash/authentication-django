@@ -30,6 +30,12 @@ AUTH_EMAIL_BODY = "..."  # Email body for email confirmation
 AUTH_INDEX_URL_NAME = "index"  # Default page to redirect after login
 ```
 
+To modify templating, use in your `settings.py` the variable
+
+```python
+AUTH_TEMPLATE_FOLDER = "your_template_folder"
+```
+
 
 ## Email configuration
 To get this work, make sure you got the email configuration in you settings.py
