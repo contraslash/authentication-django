@@ -38,8 +38,8 @@ PERMISSION_DENIED = _('You have not the proper permissions to enter this site')
 AUTH_UNIQUE_EMAIL = get_from_settings_or_default('AUTH_UNIQUE_EMAIL', False)
 AUTH_VERIFY_EMAIL = get_from_settings_or_default('AUTH_VERIFY_EMAIL', False)
 
-AUTH_ALLOW_SIGNUP = get_from_settings_or_default('AUTH_ALLOW_SIGNUP', True)
-AUTH_ALLOW_PASSWORD_RECOVERY = get_from_settings_or_default('AUTH_ALLOW_PASSWORD_RECOVERY', True)
+AUTH_ALLOW_SIGNUP = get_from_settings_or_default('AUTH_ALLOW_SIGNUP', False)
+AUTH_ALLOW_PASSWORD_RECOVERY = get_from_settings_or_default('AUTH_ALLOW_PASSWORD_RECOVERY', False)
 
 # Email Settings
 AUTH_EMAIL_FROM = get_from_settings_or_default('AUTH_EMAIL_FROM', "")

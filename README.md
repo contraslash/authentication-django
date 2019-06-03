@@ -14,6 +14,12 @@ if 'applications.authentication' in INSTALLED_APPS:
     LOGIN_URL = "log_in"
 ```
 
+Also include the following in your `urls.py`
+
+```python
+path('', include("applications.authentication.urls"))
+```
+
 ### Other common options
 
 ```python
